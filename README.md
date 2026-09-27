@@ -1,118 +1,137 @@
 <div align="center">
-  <h1>🎮 METRO-9 Infiltration</h1>
+  <h2>🎮 METRO-9 Infiltration</h2>
+  
+  <p><b>An immersive, framework-agnostic 3D exploration and stealth game.</b></p>
+
   <p>
-    <strong>An interactive, full-stack 3D stealth & exploration game built with Babylon.js, React, and TypeScript.</strong>
+    <a href="https://metro9infil.vercel.app/"><strong>🕹️ Play the Live Demo</strong></a> ·
+    <a href="#-architecture--design">Read the Architecture</a> ·
+    <a href="#-getting-started">Get Started</a>
   </p>
+
   <p>
-    <a href="https://metro9infil.vercel.app/" target="_blank">Play the Demo</a>
-    ·
-    <a href="#features">Explore Features</a>
-    ·
-    <a href="#installation">Installation Guide</a>
+    <img alt="React" src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB">
+    <img alt="Babylon.js" src="https://img.shields.io/badge/babylon.js-%23BB464B.svg?style=for-the-badge&logo=babylon.js&logoColor=white">
+    <img alt="TypeScript" src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white">
+    <img alt="Vite" src="https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white">
+    <img alt="Express.js" src="https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB">
   </p>
 </div>
 
-<hr />
-
-## 📖 Overview
-
-**METRO-9 Infiltration** is a time-hopping 3D exploration and stealth game. Navigate through distinct temporal environments—**Present City, Ancient World, and Future World**—while completing missions under the pressure of a 180-second observation timer. Players must observe the district, contact local informants, inspect and equip era-specific artifacts from physical shops, and execute secure handoffs to couriers without triggering security awareness.
-
-Built natively on the web using **Babylon.js** for performant 3D rendering and **React** for responsive, modern UI management, this project demonstrates a highly interactive, framework-agnostic game loop smoothly embedded within a web application.
-
 ---
+
+## 📖 Table of Contents
+
+- [About the Project](#-about-the-project)
+- [Key Features](#-key-features)
+- [Architecture & Design](#-architecture--design)
+- [Tech Stack](#-tech-stack)
+- [Getting Started](#-getting-started)
+- [Development Workflow](#-development-workflow)
+- [Contributing](#-contributing)
+- [License](#-license)
+
+## 🎯 About the Project
+
+**METRO-9 Infiltration** is a robust, full-stack web application demonstrating the seamless integration of a high-performance 3D rendering engine (Babylon.js) within a modern, reactive user interface (React). 
+
+Players navigate through distinct temporal environments—**Present City, Ancient World, and Future World**—executing stealth missions under strict time constraints. The project showcases advanced patterns in bridging framework-agnostic game loops with React's component lifecycle, ensuring a fluid, high-fidelity experience in the browser.
 
 ## ✨ Key Features
 
-- 🌍 **Multi-Era Environments**: Explore three meticulously generated worlds (Present, Ancient, Future) with unique procedural meshes, NPCs, and architectural landmarks.
-- 🕴️ **Dynamic Gameplay**: A fast-paced mission loop including stealth elements (security awareness), a strict observation timer, and interactive physical-world objectives (shops, informants, transit landmarks).
-- 🎨 **Live Character Customization**: Procedural third-person avatar with era-specific attire, live appearance tweaking, and responsive movement mechanics.
-- ⚡ **High-Performance 3D Engine**: Powered by Babylon.js with an optimized runtime structure—`client/src/components/GameCanvas.tsx` manages a persistent Engine seamlessly bridged with a framework-agnostic gameplay loop.
-- 💾 **Persistent Profiles**: SaveStore validates and persists world states, customized character appearances, mission progress, and field credits directly in local browser storage.
-- 📱 **Responsive & Modern UI**: Built with Radix UI, Framer Motion, and Tailwind CSS for slick, full-screen HUDs, immersive transition states, dialogs, and main menus.
+- **Multi-Era World Generation**: Three distinct, procedurally constructed 3D environments, featuring era-specific architecture, NPCs, and dynamic collision boundaries.
+- **Framework-Agnostic Game Loop**: A highly optimized scene loop that independently manages rendering, physics, and state, avoiding React reconciliation overhead to maintain 60 FPS gameplay.
+- **Advanced State & Save Management**: A robust `SaveStore` architecture that validates and serializes world states, character customizations, and mission progress into local browser storage.
+- **Reactive Heads-Up Display (HUD)**: A modern, accessible UI built with Radix Primitives and Tailwind CSS, providing real-time feedback for mission directives, detection alerts, and dialogs.
+- **Live Avatar Customization**: Procedural third-person controller with dynamic, era-appropriate attire generation, fluid movement, and physics-based interactions.
 
----
+## 📐 Architecture & Design
 
-## 🛠️ Technology Stack
+Our architectural philosophy centers on strict boundaries between UI rendering and the core game loop.
 
-| Category | Technologies |
-| :--- | :--- |
-| **Frontend/UI** | React 19, TypeScript, Vite, Tailwind CSS, Radix UI, Framer Motion, Lucide React |
-| **Game Engine** | Babylon.js |
-| **Backend** | Node.js, Express.js |
-| **Package Management** | pnpm |
-| **Linting & Formatting**| ESLint, Prettier, TypeScript (tsc) |
+- **Canvas Host Integration**: `client/src/components/GameCanvas.tsx` owns the Babylon `Engine` for the lifetime of the React application. React handles the DOM tree; Babylon handles the WebGL context.
+- **Scene Management**: `client/src/game/scene.ts` orchestrates the title-to-play state machine, camera transitions, and deterministic execution paths.
+- **Entity Ownership**:
+  - `World.ts`: Manages environment construction, mesh instancing, collision meshes, and NPC visibility.
+  - `Player.ts`: Encapsulates procedural mesh generation, input physics, and the third-person camera target.
+  - `InputManager.ts`: Maps raw DOM events into semantic game actions, carefully gating inputs during UI overlays.
 
----
+For an exhaustive technical breakdown, consult the [Architecture Documentation (`STRUCTURE.md`)](./STRUCTURE.md).
 
-## 🚀 Installation & Setup
+## 🛠️ Tech Stack
 
-Ensure you have [Node.js](https://nodejs.org/) (v18+) and [pnpm](https://pnpm.io/) installed.
+### Client
+- **Core**: [React 19](https://react.dev/) & [TypeScript 5](https://www.typescriptlang.org/)
+- **3D Engine**: [Babylon.js](https://www.babylonjs.com/) (v9)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/) & [Framer Motion](https://www.framer.com/motion/)
+- **Components**: [Radix UI](https://www.radix-ui.com/) (Headless accessibility primitives)
+- **Bundler**: [Vite 7](https://vitejs.dev/)
 
-### 1. Clone the repository
-```bash
-git clone https://github.com/RITHULOWKEY/game-infiltration.git
-cd game-infiltration
-```
+### Server & Infrastructure
+- **Runtime**: Node.js & Express.js
+- **Package Manager**: [pnpm 10](https://pnpm.io/)
+- **Build Tools**: esbuild
 
-### 2. Install dependencies
-```bash
-pnpm install
-```
+## 🚀 Getting Started
 
-### 3. Run the development server
-```bash
-pnpm dev
-```
-The game will be available locally on your host machine.
+### Prerequisites
 
-### 4. Build for Production
-To build the optimized client and server bundle:
+Ensure your local development environment meets the following requirements:
+- **Node.js**: v18.0.0 or higher
+- **pnpm**: v9.0.0 or higher (`corepack enable` recommended)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/RITHULOWKEY/game-infiltration.git
+   cd game-infiltration
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pnpm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   pnpm dev
+   ```
+   > The application will be served locally. Check your terminal output for the exact `localhost` port.
+
+### Production Build
+
+To compile the application for production, generating both the optimized client bundle and the server entry point:
+
 ```bash
 pnpm build
-```
-
-To run the production build:
-```bash
 pnpm start
 ```
 
----
+## 💻 Development Workflow
 
-## 🏗️ Project Architecture
+We enforce strict typings and consistent code formatting to maintain project health.
 
-The architecture intentionally separates React UI components from the core Babylon.js rendering engine:
-
-- `client/src/components/GameCanvas.tsx`: Owns the full-screen Babylon Engine for the React component lifetime.
-- `client/src/game/scene.ts`: Manages title-to-play flow, world changes, camera, mission state, and local-save integration.
-- `client/src/game/World.ts`: Constructs the Present, Ancient, and Future scenes, handling collision blockers, NPCs, and visibility control.
-- `client/src/game/Player.ts`: Handles procedural avatar generation, movement, jump physics, and collision logic.
-- `client/src/game/Hud.ts`: A custom HUD implementation that relays semantic UI actions back to the scene loop.
-
-For an exhaustive breakdown of the game loops and states, see the [`STRUCTURE.md`](./STRUCTURE.md) file.
-
----
+- **Type Checking**: Run `pnpm check` to execute `tsc` across the workspace without emitting files.
+- **Formatting**: Run `pnpm format` to automatically format all files using Prettier.
+- **Testing**: Run `pnpm vitest` to execute the unit test suite (if configured).
 
 ## 🤝 Contributing
 
-We welcome contributions! Please follow standard Git workflow protocols:
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+We welcome contributions from the community. To ensure a smooth process:
 
-**Development Scripts:**
-- `pnpm check`: Type check TypeScript files without emitting code.
-- `pnpm format`: Formats code via Prettier.
+1. Fork the project.
+2. Create your feature branch (`git checkout -b feature/amazing-feature`).
+3. Adhere strictly to the project's Prettier and TypeScript configurations.
+4. Commit your changes utilizing conventional commit messages (`git commit -m 'feat: add amazing feature'`).
+5. Push to the branch (`git push origin feature/amazing-feature`).
+6. Open a Pull Request for review.
 
----
+## 📜 License
 
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 <div align="center">
-  <b>Built by <a href="https://github.com/RITHULOWKEY">Rithika K</a></b>
+  <b>Architected & Developed by <a href="https://github.com/RITHULOWKEY">Rithika K</a></b>
 </div>
